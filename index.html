@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Medias - Una Aventura VR</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comfortaa', cursive, sans-serif;
+            background: linear-gradient(135deg, #E88B7A 0%, #A8C686 50%, #7BA7D1 100%);
+            color: #2C3E50;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(232, 139, 122, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2C3E50;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #2C3E50;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #E88B7A 0%, #A8C686 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(168, 198, 134, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(123, 167, 209, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(232, 139, 122, 0.3) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-20px) scale(1.05); }
+        }
+
+        .hero-content {
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #2C3E50;
+            text-shadow: 4px 4px 8px rgba(255, 255, 255, 0.5);
+            animation: bounce 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #34495E;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #2C3E50;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 2.5rem;
+            background: linear-gradient(45deg, #A8C686, #7BA7D1);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(168, 198, 134, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(168, 198, 134, 0.6);
+            background: linear-gradient(45deg, #7BA7D1, #A8C686);
+        }
+
+        /* Story Section */
+        .story {
+            padding: 100px 0;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .story h2 {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 3rem;
+            color: #2C3E50;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .story-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #2C3E50;
+        }
+
+        .character-showcase {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .character {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .character:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .character-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Imagen de personajes */
+        .character-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Hero con imagen de fondo */
+        .hero-image {
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite alternate;
+        }
+
+        /* Galería de imágenes */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+
+        .character h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #2C3E50;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #7BA7D1 0%, #E88B7A 100%);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 3rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2C3E50;
+        }
+
+        .feature-card p {
+            color: #34495E;
+            line-height: 1.6;
+        }
+
+        /* Demo Section */
+        .demo {
+            padding: 100px 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .demo h2 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: #2C3E50;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .demo-placeholder {
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(45deg, rgba(168, 198, 134, 0.3), rgba(232, 139, 122, 0.3));
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #2C3E50;
+            border: 3px dashed rgba(123, 167, 209, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-placeholder::before {
+            content: '🧦👫';
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #A8C686 0%, #7BA7D1 100%);
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            color: #2C3E50;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #E88B7A;
+            box-shadow: 0 0 20px rgba(232, 139, 122, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #E88B7A, #A8C686);
+            color: #fff;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(232, 139, 122, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(232, 139, 122, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            background: rgba(44, 62, 80, 0.9);
+            color: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .story-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .character-showcase {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .features h2,
+            .demo h2,
+            .contact h2,
+            .story h2 {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Floating socks animation */
+        .floating-sock {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatingSock 10s infinite linear;
+            opacity: 0.6;
+        }
+
+        @keyframes floatingSock {
+            0% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">A Medias</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#historia">Historia</a></li>
+                <li><a href="#experiencia">Experiencia VR</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero">
+        <!-- Imagen decorativa opcional -->
+        <!-- <img src="URL_DE_TU_IMAGEN_NONA_NONO" alt="Nona y Nono" class="hero-image"> -->
+        
+        <div class="hero-content">
+            <h1>A MEDIAS</h1>
+            <p class="subtitle">Una aventura VR sobre amor y valentía</p>
+            <p>Acompaña a Nona en su increíble viaje al mundo debajo de la cama para rescatar a su mejor amigo Nono. Una experiencia inmersiva llena de magia, humor y corazón.</p>
+            <a href="#demo" class="cta-button">🧦 Vivir la Aventura</a>
+        </div>
+    </section>
+   <!-- Imagen Principal -->
+            <div class="main-image-container">
+                <img src="https://i.postimg.cc/mr9Vw1c0/nona-Corriendo-Abajo.png" alt="Nona en su aventura" class="main-showcase-image">
+                <div class="image-overlay">
+                    <h3>La Valentía de Nona</h3>
+                    <p>Descubre cómo una pequeña media encuentra el coraje para emprender la aventura más grande de su vida.</p>
+                </div>
+            </div>
+
+    <section id="historia" class="story">
+        <div class="container">
+            <h2>La Historia</h2>
+            <div class="story-content">
+                <div class="story-text">
+                    <h3>🧦 El Comienzo de una Gran Aventura</h3>
+                    <p>
+                        Nona y Nono eran la pareja de medias más unida de la cesta. Siempre juntas, siempre felices... hasta que un día, Nono desapareció misteriosamente.
+                    </p>
+                    <p>
+                        Decidida a no quedarse sola, Nona emprende un viaje extraordinario hacia el mundo secreto que existe debajo de todas las camas: un lugar lleno de objetos perdidos, criaturas curiosas y aventuras inesperadas.
+                    </p>
+                    <p>
+                        ¿Podrá Nona encontrar a su media par y volver a estar completa? En realidad virtual, tú serás parte de esta emotiva historia de amistad y determinación.
+                    </p>
+                </div>
+                <div class="character-showcase">
+                    <div class="character">
+                        <!-- Reemplaza con tu imagen de Nona -->
+                        <img src="https://i.postimg.cc/mr9Vw1c0/nona-Corriendo-Abajo.png" alt="Nona" class="character-image">
+                        <div class="character-icon">🧦</div>
+                        <h3>Nona</h3>
+                        <p>Timida e inocente pero valiente y determinada por recuperar a Nono</p>
+                    </div>
+                    <div class="character">
+                        <!-- Reemplaza con tu imagen de Nono -->
+                        <img src="https://i.postimg.cc/SRdg90XR/int3.png" alt="Nono" class="character-image"> 
+                        <div class="character-icon">🧦</div>
+                        <h3>Nono</h3>
+                        <p>El compañero perdido que debe ser rescatado</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experiencia" class="features">
+        <div class="container">
+            <h2>Experiencia VR Única</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🏠</div>
+                    <h3>Mundo Debajo de la Cama</h3>
+                    <p>Explora un universo mágico lleno de objetos perdidos, cada uno con su propia historia y personalidad.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👫</div>
+                    <h3>Amistad Verdadera</h3>
+                    <p>Una historia conmovedora sobre la importancia de los lazos que nos unen y la determinación por encontrar a quienes amamos.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Arte Encantador</h3>
+                    <p>Visuales coloridos y tiernos que capturan la esencia juguetona y emotiva de esta aventura única.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Interacción Natural</h3>
+                    <p>Controles intuitivos que te permiten sentirte realmente parte del mundo de Nona y sus aventuras.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌟</div>
+                    <h3>Momentos Mágicos</h3>
+                    <p>Descubre secretos ocultos y personajes entrañables en cada rincón de este mundo fantástico.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">❤️</div>
+                    <h3>Para Toda la Familia</h3>
+                    <p>Una experiencia que toca el corazón de niños y adultos, perfecta para compartir en familia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="demo">
+        <div class="container">
+            <h2>Adelanto de la Aventura</h2>
+            <div class="demo-container">
+                <div class="demo-placeholder">
+                    <div style="margin-top: 2rem;">
+                        <strong>🎬 Próximamente: Demo Interactivo</strong>
+                        <br><br>
+                        Pronto podrás experimentar los primeros momentos de la aventura de Nona
+                        <br><br>
+                        <em>¡Prepárate para sumergirte en el mundo debajo de la cama!</em>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; font-size: 1.2rem; color: #2C3E50;">
+                Mantente atento para ser de los primeros en vivir esta increíble experiencia VR
+            </p>
+        </div>
+    </section>
+
+    <section id="contacto" class="contact">
+        <div class="container">
+            <h2>¡Únete a la Aventura!</h2>
+            <p style="margin-bottom: 3rem; font-size: 1.3rem; color: #fff;">
+                ¿Quieres saber más sobre "A Medias" o colaborar con nosotros? ¡Nos encantaría escucharte!
+            </p>
+            
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="interes">¿Qué te interesa?</label>
+                    <select id="interes" name="interes">
+                        <option value="">Selecciona una opción</option>
+                        <option value="demo">Probar el demo</option>
+                        <option value="distribucion">Distribución</option>
+                        <option value="colaboracion">Colaboración</option>
+                        <option value="prensa">Prensa y medios</option>
+                        <option value="educativo">Uso educativo</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="mensaje">Mensaje</label>
+                    <textarea id="mensaje" name="mensaje" rows="5" placeholder="Cuéntanos sobre tu interés en 'A Medias'..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Enviar Mensaje 💌</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 A Medias. Una historia sobre encontrar lo que nos completa. 🧦❤️🧦</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(232, 139, 122, 0.98)';
+                header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.2)';
+            } else {
+                header.style.background = 'rgba(232, 139, 122, 0.95)';
+                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // Animated floating socks
+        function createFloatingSock() {
+            const sock = document.createElement('div');
+            sock.className = 'floating-sock';
+            sock.innerHTML = Math.random() > 0.5 ? '🧦' : '🧸';
+            sock.style.left = Math.random() * 100 + 'vw';
+            sock.style.animationDuration = Math.random() * 5 + 8 + 's';
+            sock.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(sock);
+
+            setTimeout(() => {
+                sock.remove();
+            }, 12000);
+        }
+
+        // Create floating elements periodically
+        setInterval(createFloatingSock, 3000);
+
+        // Form submission with cute animation
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const button = document.querySelector('.submit-btn');
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = '¡Enviando! 🧦💫';
+            button.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                button.innerHTML = '¡Enviado! ✨';
+                button.style.background = 'linear-gradient(45deg, #A8C686, #7BA7D1)';
+                
+                setTimeout(() => {
+                    alert('¡Gracias por tu interés en "A Medias"! Nona y Nono están emocionados de conocerte. Te contactaremos pronto 🧦❤️');
+                    button.innerHTML = originalText;
+                    button.style.transform = 'scale(1)';
+                    button.style.background = 'linear-gradient(45deg, #E88B7A, #A8C686)';
+                    this.reset();
+                }, 1000);
+            }, 1500);
+        });
+
+        // Add bounce effect to CTA button
+        document.querySelector('.cta-button').addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#demo') {
+                e.preventDefault();
+                this.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                    document.querySelector('#demo').scrollIntoView({ behavior: 'smooth' });
+                }, 200);
+            }
+        });
+
+        // Character cards interaction
+        document.querySelectorAll('.character').forEach(character => {
+            character.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.05)';
+            });
+            
+            character.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
